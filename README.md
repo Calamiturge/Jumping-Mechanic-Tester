@@ -7,6 +7,7 @@ This github repo currently holds both the unbuilt game files so everything is fu
 There's also the built version of the game available on itch.io here - https://calamiturge.itch.io/platformer-tester
 
 If you have any questions or need any help, feel free to contact me on discord (id is calamiturge)
+If you want different maps or features / modify some values I don't let you, feel free to ask me, but I recommend having a look at the Godot game engine to maybe modify the project yourself / build additional maps to test yourself, it's pretty easy and the engine is very lightweight / runnable on old dinky laptops.
 
 Best,
 Calamiturge / Bailin Zhen
