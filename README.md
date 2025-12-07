@@ -11,3 +11,5 @@ If you have any questions or need any help, feel free to contact me on discord (
 Best,
 Calamiturge / Bailin Zhen
 UC Alumni
+
+Note - the .exe likes to hang for like 15s on first run, I assume it's setting up files or something unsure
