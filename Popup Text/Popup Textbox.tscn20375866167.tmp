@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjs6382ccr562"]
+
+[ext_resource type="Script" uid="uid://ck5fgwktlrcfn" path="res://Popup Text/popup_textbox.gd" id="1_miknl"]
+[ext_resource type="Texture2D" uid="uid://cfxuy8oe67vc5" path="res://Symbol.png" id="1_ogg4r"]
+
+[node name="PopupTextbox" type="Sprite2D"]
+position = Vector2(383, 183)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_ogg4r")
+script = ExtResource("1_miknl")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 76.0
+offset_top = 25.0
+offset_right = 490.415
+offset_bottom = 79.75
+scale = Vector2(2, 2)
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/MarginContainer"]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Extra Text "
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+metadata/_edit_lock_ = true

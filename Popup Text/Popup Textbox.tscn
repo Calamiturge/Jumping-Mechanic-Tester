@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjs6382ccr562"]
+
+[ext_resource type="Texture2D" uid="uid://dai08ikmkrqht" path="res://Map and UI Stuff/IconSmall2.png" id="1_ogg4r"]
+[ext_resource type="Script" uid="uid://ck5fgwktlrcfn" path="res://Popup Text/popup_textbox.gd" id="2_ogg4r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ogg4r"]
+bg_color = Color(0.113725, 0.113725, 0.113725, 0.890196)
+
+[node name="PopupIcon" type="TextureRect"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 159.0
+offset_top = -98.0
+offset_right = 176.0
+offset_bottom = -81.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_ogg4r")
+stretch_mode = 2
+script = ExtResource("2_ogg4r")
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+z_index = 3
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 200.41
+offset_top = -100.0
+offset_right = 725.41
+offset_bottom = -45.25
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ogg4r")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/MarginContainer"]
+custom_minimum_size = Vector2(525, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Extra Text "
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+metadata/_edit_lock_ = true
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

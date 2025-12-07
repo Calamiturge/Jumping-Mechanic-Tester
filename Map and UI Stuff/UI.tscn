@@ -1,0 +1,599 @@
+[gd_scene load_steps=4 format=3 uid="uid://brtgsie016p5m"]
+
+[ext_resource type="PackedScene" uid="uid://bjs6382ccr562" path="res://Popup Text/Popup Textbox.tscn" id="1_b3bc3"]
+[ext_resource type="Script" uid="uid://ct1u5lrlojvkq" path="res://Map and UI Stuff/ui.gd" id="1_xmiec"]
+[ext_resource type="Script" uid="uid://coa1qyk2okxmc" path="res://Map and UI Stuff/panel.gd" id="2_3peey"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xmiec")
+metadata/_edit_lock_ = true
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1137.3
+offset_bottom = 331.675
+script = ExtResource("2_3peey")
+metadata/_edit_lock_ = true
+
+[node name="Basic_Attributes" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 8.0
+offset_right = 180.0
+offset_bottom = 137.0
+
+[node name="Speed" type="HBoxContainer" parent="Panel/Basic_Attributes"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Basic_Attributes/Speed" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "It's how fast you move horizontally. Base value of 300, value is in pixels/second"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Basic_Attributes/Speed"]
+layout_mode = 2
+text = "Speed : "
+
+[node name="LineEdit" type="LineEdit" parent="Panel/Basic_Attributes/Speed"]
+layout_mode = 2
+text = "300"
+placeholder_text = "300"
+
+[node name="JumpPower" type="HBoxContainer" parent="Panel/Basic_Attributes"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Basic_Attributes/JumpPower" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "Essentially how \"strong\" your jump is upwards.. See the jump options to know exactly what the value means"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Basic_Attributes/JumpPower"]
+layout_mode = 2
+text = "Jump Power"
+
+[node name="LineEdit" type="LineEdit" parent="Panel/Basic_Attributes/JumpPower"]
+layout_mode = 2
+text = "600"
+placeholder_text = "600"
+
+[node name="AirControl" type="HBoxContainer" parent="Panel/Basic_Attributes"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Basic_Attributes/AirControl" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "How much horizontal control you have while airborne, as a percentage. Expected value being 0<x<=100. 
+
+What this does is essentially make it so if you jump without moving first, you go slower in the air, or if you turn around while moving in the air, you move slower. If you jump with horizontal speed already, this will not slow you down.
+
+Has potential interesting applications with values over 100 but not sure what it would be used for"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Basic_Attributes/AirControl"]
+layout_mode = 2
+text = "Air Control :"
+
+[node name="LineEdit" type="LineEdit" parent="Panel/Basic_Attributes/AirControl"]
+layout_mode = 2
+text = "100"
+placeholder_text = "100"
+
+[node name="Button" type="Button" parent="Panel/Basic_Attributes"]
+layout_mode = 2
+focus_mode = 0
+text = "Set"
+
+[node name="Jumping_Options" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 218.815
+offset_top = 6.0
+offset_right = 526.075
+offset_bottom = 227.0
+
+[node name="Impulse" type="HBoxContainer" parent="Panel/Jumping_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Jumping_Options/Impulse" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This is the standard jump, it simply sets your y velocity (measured in pixels/second) when you jump. It mimics real life jumping."
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Jumping_Options/Impulse"]
+layout_mode = 2
+text = "Impulse Jump"
+
+[node name="Checkbox" type="CheckButton" parent="Panel/Jumping_Options/Impulse"]
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+
+[node name="DurationJumpv1" type="HBoxContainer" parent="Panel/Jumping_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Jumping_Options/DurationJumpv1" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This option, along with the below lifespan, makes it so your jump is a set vertical value upwards equal to your jump power in px/s for the lifespan (or until otherwise cut short). This is more like a vertical dash, or \"jetpack\" like movement.
+
+This method is very commonly used with release fall option for a variable jump height type jump"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Jumping_Options/DurationJumpv1"]
+layout_mode = 2
+text = "Duration Jump V1"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Jumping_Options/DurationJumpv1"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="DurationJumpv2" type="HBoxContainer" parent="Panel/Jumping_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Jumping_Options/DurationJumpv2" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This is the same as above but instead of instantly being set to the jump power speed, you accelerate to that speed in .1s
+
+This is essentially to better mimic a \"jetpack\" esque acceleration but frankly the instant acceleration isn't all that noticable anyways"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Jumping_Options/DurationJumpv2"]
+layout_mode = 2
+text = "Duration Jump V2"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Jumping_Options/DurationJumpv2"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="Duration Jump Time" type="HBoxContainer" parent="Panel/Jumping_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Jumping_Options/Duration Jump Time" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "Max duration of the duration jump, default of .33s"
+metadata/_edit_lock_ = true
+
+[node name="Smooth Jump Lifespan" type="Label" parent="Panel/Jumping_Options/Duration Jump Time"]
+layout_mode = 2
+text = "Duration Jump Lifespan"
+
+[node name="LineEdit" type="LineEdit" parent="Panel/Jumping_Options/Duration Jump Time"]
+layout_mode = 2
+placeholder_text = ".33"
+
+[node name="Button" type="Button" parent="Panel/Jumping_Options/Duration Jump Time"]
+layout_mode = 2
+text = "Set"
+
+[node name="CapJumpSpeedValue" type="HBoxContainer" parent="Panel/Jumping_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Jumping_Options/CapJumpSpeedValue" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This sets a maximum Y velocity upwards. 
+
+Note that if your jump velocity would exceed this cap, the excess velocity is not removed, instead, it will simply \"overcap\" the speed limit and your character will move at the lower between the capped velocity and \"real\" velocity. The \"real\" velocity will continue to get affected by gravity as normal. 
+
+This option is primarily used to allow for very high jumps with impulse jumps without launching the character up at incredible speeds. 
+
+An alternate way to implement this mechanic is the Jump Weak Gravity option, or just simply duration jumps. A very high jump power with limited jump speed will behave very similarly to a duration jump."
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Jumping_Options/CapJumpSpeedValue"]
+layout_mode = 2
+text = "Jump Speed Cap"
+
+[node name="LineEdit" type="LineEdit" parent="Panel/Jumping_Options/CapJumpSpeedValue"]
+layout_mode = 2
+placeholder_text = "9999"
+
+[node name="Button" type="Button" parent="Panel/Jumping_Options/CapJumpSpeedValue"]
+layout_mode = 2
+text = "Set"
+
+[node name="Falling_Options" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 533.0
+offset_top = 7.0
+offset_right = 766.0
+offset_bottom = 278.0
+
+[node name="Gravity" type="HBoxContainer" parent="Panel/Falling_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Falling_Options/Gravity" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "It's gravity, it pulls the player down at a constant rate.
+
+Realistic, but not very good by itself for platformers, see Release Fall, Fast Fall, and Jump Weak Gravity options
+
+You can turn gravity off
+But... why? This entire simulator and all options assume gravity is on"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Falling_Options/Gravity"]
+layout_mode = 2
+text = "Gravity "
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Falling_Options/Gravity"]
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+
+[node name="GravPower" type="HBoxContainer" parent="Panel/Falling_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Falling_Options/GravPower" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "How strong gravity is, standard value of 980, this applies a downward force on your player of value px/s."
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Falling_Options/GravPower"]
+layout_mode = 2
+text = "Grav Power"
+
+[node name="LineEdit" type="LineEdit" parent="Panel/Falling_Options/GravPower"]
+layout_mode = 2
+text = "980"
+placeholder_text = "980"
+
+[node name="Button" type="Button" parent="Panel/Falling_Options/GravPower"]
+layout_mode = 2
+focus_mode = 0
+text = "Set"
+
+[node name="FallSpeedCap" type="HBoxContainer" parent="Panel/Falling_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Falling_Options/FallSpeedCap" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "The maximum speed you can fall downwards. This is always on but you can \"disable\" it by simply setting it to some enormous number."
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Falling_Options/FallSpeedCap"]
+layout_mode = 2
+text = "Fall Speed Cap"
+
+[node name="LineEdit" type="LineEdit" parent="Panel/Falling_Options/FallSpeedCap"]
+layout_mode = 2
+placeholder_text = "9999"
+
+[node name="Button" type="Button" parent="Panel/Falling_Options/FallSpeedCap"]
+layout_mode = 2
+focus_mode = 0
+text = "Set"
+
+[node name="FixedFall" type="HBoxContainer" parent="Panel/Falling_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Falling_Options/FixedFall" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This is a very strange option, that immediately sets your fall speed to your gravity power (or fall speed cap if it's lower) the instant your velocity becomes negative. I have no idea why I actually made this, this has like no real application in terms of platforming."
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Falling_Options/FixedFall"]
+layout_mode = 2
+text = "Fixed Fall Speed"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Falling_Options/FixedFall"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="FastFall" type="HBoxContainer" parent="Panel/Falling_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Falling_Options/FastFall" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This option increases gravity on the player when the player is falling.  Why you would want to do this is hard to explain, but if you experiment with this option you should see why it's good and fairly commonly used.
+
+If you want a longer explaination -- gravity is generally too weak and makes jumps feel floaty, but you can't simply increase gravity itself (when used with the standard impulse jump) because that'll make the jump itself less high and still have the same jump arc regardless. This option is used to make the fall of the jump faster while not impacting the ascent of the jump."
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Falling_Options/FastFall"]
+layout_mode = 2
+text = "Fast Fall"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Falling_Options/FastFall"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="FastFallSpeed" type="HBoxContainer" parent="Panel/Falling_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Falling_Options/FastFallSpeed" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This is how much fast fall multiplies gravity by. The expected value is 1<x"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Falling_Options/FastFallSpeed"]
+layout_mode = 2
+text = "Fast Fall Multiplier"
+
+[node name="LineEdit" type="LineEdit" parent="Panel/Falling_Options/FastFallSpeed"]
+layout_mode = 2
+text = "2"
+placeholder_text = "2"
+
+[node name="Button" type="Button" parent="Panel/Falling_Options/FastFallSpeed"]
+layout_mode = 2
+focus_mode = 0
+text = "Set"
+
+[node name="FastAscent" type="HBoxContainer" parent="Panel/Falling_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Falling_Options/FastAscent" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This is essentially the opposite of above, when you're jumping, it will lower the strength of gravity. This allows for a weaker jump power to reach higher, the effect this has. at least for impulse jumps, is that you can go very high without your character flying up at breakneck speeds which happens at higher impulse jump powers.
+
+An alternative of capped jumping speeds, they achieve basically the same purpose."
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Falling_Options/FastAscent"]
+layout_mode = 2
+text = "Jump Weak Gravity"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Falling_Options/FastAscent"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="FastAscentPower" type="HBoxContainer" parent="Panel/Falling_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Falling_Options/FastAscentPower" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This is how much Jump Weak Gravity multiplies gravity by, the expected value is 0<x<=1"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Falling_Options/FastAscentPower"]
+layout_mode = 2
+text = "Jump Weak Grav Mult"
+
+[node name="LineEdit" type="LineEdit" parent="Panel/Falling_Options/FastAscentPower"]
+layout_mode = 2
+text = ".5"
+placeholder_text = ".5"
+
+[node name="Button" type="Button" parent="Panel/Falling_Options/FastAscentPower"]
+layout_mode = 2
+focus_mode = 0
+text = "Set"
+
+[node name="Extra_Options" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 840.225
+offset_top = 8.0
+offset_right = 1105.22
+offset_bottom = 348.0
+
+[node name="DoubleJump" type="HBoxContainer" parent="Panel/Extra_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Extra_Options/DoubleJump" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "Standard Double Jump, it'll simply repeat your previous Jump action. For the purposes of Momentum, it'll also set your y velocity to 0 before doing the jump action.
+
+Note, Double Jumping really only makes sense to use with impulse jumps, it will work with smooth jumps in this test but like, it really doesn't feel good or make sense. Double Jumps also play poorly with Jump Peak Hover and release falls, I would not recommend having these options on together"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Extra_Options/DoubleJump"]
+layout_mode = 2
+text = "Double Jump"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Extra_Options/DoubleJump"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="CoyoteTime" type="HBoxContainer" parent="Panel/Extra_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Extra_Options/CoyoteTime" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This lets the player still jump even if they're no longer touching the ground for .15s after leaving it. Commonly used in platformers to make jumping off of edges feel better."
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Extra_Options/CoyoteTime"]
+layout_mode = 2
+text = "Coyote Time"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Extra_Options/CoyoteTime"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="JumpPeakHover" type="HBoxContainer" parent="Panel/Extra_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Extra_Options/JumpPeakHover" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This is a really weird option that lowers gravity by a large amount when you reach the apex of your jump for .35s
+
+Note I'm not even sure why this option was originally made, but it's poorly designed and implemented and I'm like 90% sure there's something or other with this that can break the sim
+"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Extra_Options/JumpPeakHover"]
+layout_mode = 2
+text = "Jump Peak Hover"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Extra_Options/JumpPeakHover"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="ReleaseFallInstant" type="HBoxContainer" parent="Panel/Extra_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Extra_Options/ReleaseFallInstant" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This option makes it so when you release the jump button, your y velocity is set to 0.
+
+This is a pretty standard mechanic in a bunch of platformers, allowing for variable jump height. Another method to achieve the same-ish outcome would be to massively increase gravity when the button is released rather than cutting the velocity, but that option isn't in this simulator."
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Extra_Options/ReleaseFallInstant"]
+layout_mode = 2
+text = "Release Fall Instant"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Extra_Options/ReleaseFallInstant"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="ReleaseFallHalf" type="HBoxContainer" parent="Panel/Extra_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Extra_Options/ReleaseFallHalf" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This option makes it so when you release the jump button, your y velocity is set to half of its current value. This gives your player slightly less control but also enforces a minimum \"hopping\" vertical distance, and feels a bit more \"natural\", as natural as having vertical air control can be anyways."
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Extra_Options/ReleaseFallHalf"]
+layout_mode = 2
+text = "Release Fall Half"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Extra_Options/ReleaseFallHalf"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="CharacterColor" type="HBoxContainer" parent="Panel/Extra_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Extra_Options/CharacterColor" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This option makes the character green if they can jump, red otherwise"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Extra_Options/CharacterColor"]
+layout_mode = 2
+text = "Character Color if can jump "
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Extra_Options/CharacterColor"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="InputBuffer" type="HBoxContainer" parent="Panel/Extra_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Extra_Options/InputBuffer" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "It's a standard input buffer, only for jumping. If you can't jump while you press the jump button, the press is stored for .2s and if you become able to jump within that time, it'll do so immediately. "
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Extra_Options/InputBuffer"]
+layout_mode = 2
+text = "Input buffer"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Extra_Options/InputBuffer"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="InputBufferTime" type="HBoxContainer" parent="Panel/Extra_Options"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Extra_Options/InputBufferTime" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "How long the input buffer for jump is, around .10-.25s is normal, default of .15s"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Extra_Options/InputBufferTime"]
+layout_mode = 2
+text = "Input Buffer Time"
+
+[node name="LineEdit" type="LineEdit" parent="Panel/Extra_Options/InputBufferTime"]
+layout_mode = 2
+placeholder_text = ".15"
+
+[node name="Button" type="Button" parent="Panel/Extra_Options/InputBufferTime"]
+layout_mode = 2
+focus_mode = 0
+text = "Set"
+
+[node name="Momentum" type="HBoxContainer" parent="Panel/Extra_Options"]
+visible = false
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel/Extra_Options/Momentum" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This replaces the instantaneous movement of games with a basic momentum one. For this simulator at least this will simply make turning around more annoying and make you need to accelerate to max speed.
+
+- You now accelerate to your maximum speed in .15s from standstill
+- \"Turning around\" will cut your current momentum to half immediately instead of immediately turning around
+
+Frankly, momentum based movement is best implemented in games with more complex options than this little project will test, but for example, preserving movement speed from dash abilities, or momentum from jumping (if jumping also gave horizontal momentum, an option this simulator currently does not have) (commonly called bunny hopping)"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/Extra_Options/Momentum"]
+layout_mode = 2
+text = "Momentum"
+
+[node name="CheckBox" type="CheckButton" parent="Panel/Extra_Options/Momentum"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="Teleport_Options" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 228.0
+offset_top = 175.0
+offset_right = 358.0
+offset_bottom = 311.0
+
+[node name="TeleTop" type="Button" parent="Panel/Teleport_Options"]
+layout_mode = 2
+text = "Teleport Top"
+
+[node name="TeleMid" type="Button" parent="Panel/Teleport_Options"]
+layout_mode = 2
+text = "Teleport Middle"
+
+[node name="TeleLeft" type="Button" parent="Panel/Teleport_Options"]
+layout_mode = 2
+text = "Teleport Left"
+
+[node name="TeleLeftest" type="Button" parent="Panel/Teleport_Options"]
+layout_mode = 2
+text = "Teleport Leftest"
+
+[node name="HideButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 163.0
+offset_right = 65.0
+offset_bottom = 200.0
+text = "Hide"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 1019.0
+offset_top = -2.0
+offset_right = 1127.0
+offset_bottom = 38.0
+
+[node name="ToolTip2" parent="Panel/HBoxContainer" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "Hello! This is a little project I made for myself a while back but decided to spruce up a little and release publicly for students to test with and/or copy code from. Got the idea after noticing a few platforming game projects where the movements were just... well, really quite poor and annoying to use which distracted from the primary purpose of the game which often wasnt the platforming itself.
+I want this tool to help those that don't want to care about coding to copy from to have nice movement in your game while you focus on what's more important to you! Wherever you're seeing this, there should also be a github repo with all files so you can examine or download the entire unbuilt project and copy whatever you need! If you have any questions or need any help, feel free to contact me on discord (id is calamiturge)
+
+Best,
+Calamiturge / Bailin Zhen
+UC Alumni"
+metadata/_edit_lock_ = true
+
+[node name="ToolTip3" parent="Panel/HBoxContainer" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "Also note, there is very little sanity checking for the values in here other than a simple float check, for example, you can input negative gravity and you'll start floating, but like, I did not test for or intend any of this interactions. Feel free to play around with them anyways but be aware if you go outside of intended values there's a pretty likely chance something or other will break or not work as expected."
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "README"
+
+[node name="Showbutton" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 11.0
+offset_top = 6.0
+offset_right = 63.0
+offset_bottom = 43.0
+text = "Show"
