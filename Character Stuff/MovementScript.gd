@@ -81,15 +81,16 @@ and then turns the calculated X and Y into "actual" x and y velocity at the end.
 This is primarily done to allow for the velocity clamping and "overcapping" options.
 If your game doesn't need this, you can fairly safely just replace Calc_Y_Velocity/Calc_X_Velocity with velocity.y/velocity.x ("actual values")
 respectively and remove the entire clamping operation at the end of the physics process
-
-I also try to break up the physics process into as many distinct functions as I can
 '''
 
 
-
+'''
+This is the main _physics_process function that runs every physics frame and dictates all movement 
+I broke up a lot of individual sections into their own functions, see notes above individual functions to see what they do
+'''
 func _physics_process(delta: float) -> void:
 	
-	#This function handles everything to do with falling
+	#This function handles falling
 	Handle_Falling(delta)
 
 	
@@ -99,21 +100,23 @@ func _physics_process(delta: float) -> void:
 	#Namely mostly coyote time and double jumping
 	JumpFunctionality()
 			
-	
+	#If a player presses a jump key (up arrow, space, or w), we run the attemptjump function
 	if Input.is_action_just_pressed("Jump"): 
 		AttemptJump()
 		
-	if JumpBufferAvailable: #if we have the jump input buffer available
+	#This here is for the input buffer, if the flag is switched on, we try to jump every single frame
+	if JumpBufferAvailable: 
 		if AttemptJump(false): #we try to jump, it'll return true or false based on if we jumped, we input false to tell the option that we're input buffer jumping and not "real" jumping to not retrigger the input buffer timer
 			JumpBufferAvailable = false #if we did jump, we turn input buffer off
-			JumpBufferTimer.stop()
+			JumpBufferTimer.stop() #and turn off the timer
 	
 	
+	#These flags are for "in progress" duration jumps, where it simply directly sets the velocity
 	if isDurationJumping1: #These turn on if Duration jumping is in progress
-		Calc_Y_Velocity = -JUMP_POWER
+		Calc_Y_Velocity = -JUMP_POWER #directly set the velocity
 	if isDurationJumping2: #Duration Jump 2
 		Calc_Y_Velocity -= JUMP_POWER*delta/.1 #Simply accelerates to JUMP_POWER within .1s 
-		Calc_Y_Velocity = clamp(Calc_Y_Velocity,-JUMP_POWER, 9999)
+		Calc_Y_Velocity = clamp(Calc_Y_Velocity,-JUMP_POWER, 9999) #and then clamp it
 	
 	
 	
@@ -140,7 +143,7 @@ func _physics_process(delta: float) -> void:
 				DurationJumpEnd()
 				DurationJumpTimer.stop()
 			
-			Calc_Y_Velocity = 0
+			Calc_Y_Velocity = 0 #we kill our Y velocity
 			HeadBonked = true
 			CanHover = false
 	
@@ -156,7 +159,7 @@ func _physics_process(delta: float) -> void:
 	# Handle Moving - This is a very simple left-right input, with very binary yes/no movement
 	# A lot of games use more complex physics based movement with acceleration and deceleration everywhere, but this is simple and good enough for 
 	# non physics based platformers (think of like meatboy as a physics based platformer, this is closer to like celeste (at least horizontally)
-	# The benefits of the system is very responsive controls, there are only 2 states, "GO" or "STOP", you can stop and turn on a time
+	# The benefits of the system is very responsive controls, there are only 2 states, "GO" or "STOP", you can stop and turn on a dime
 	# Downsides include lack of realism and might feel awkward to those used to the minor acceleration found in games like mario
 	var direction := Input.get_axis("Left", "Right")
 	if direction == 1: #If we're pressing right, then we move right
@@ -183,26 +186,29 @@ func _physics_process(delta: float) -> void:
 	velocity.y = clamp(velocity.y,Min_Y_Velocity,Max_Y_Velocity)
 	#This is what actually moves our character based off of the velocity value, it's a builtin godot function for character body objects
 	move_and_slide()
-	#print(Calc_Y_Velocity)
+
 	Handle_Sprite() #This handles the sprite of the character, nothing to see here but a bunch of boilerplate code
 	
 
+'''
+This function here handles falling, basically, if we're not on the ground and there's gravity on, apply gravity based on flags
+'''
 func Handle_Falling(delta:float) -> void:
 	
 	#we try to evaluate if we're using fixed falling speed first
-	if FixedFallSpeedOn and not is_on_floor() and GravityEnabled: 
-		if Calc_Y_Velocity < 0:
+	if FixedFallSpeedOn and not is_on_floor() and GravityEnabled: #if we have fixed falling
+		if Calc_Y_Velocity < 0: #if we're NOT falling, we're still ascending, so apply gravity as usual
 			if not WeakJumpGravityEnabled: 
 				Calc_Y_Velocity += GravityStrength * delta
 			else:
-				Calc_Y_Velocity += GravityStrength * WeakJumpGravityMult * delta
-		else: 
+				Calc_Y_Velocity += GravityStrength * WeakJumpGravityMult * delta #weak gravity while ascending flag
+		else:  #but if we ARE falling, we straight up set y velocity to gravity and that's that
 			if not FastFall: 
 				Calc_Y_Velocity = GravityStrength
 			else:
-				Calc_Y_Velocity = GravityStrength * FastFallStrength
+				Calc_Y_Velocity = GravityStrength * FastFallStrength #strong gravity while falling flag still applies if it's on
 	
-	#else we use gravity
+	#else we use standard gravity
 	elif not is_on_floor() and GravityEnabled: #This if statement checks to see if we're not on the floor, and we have gravity on. 
 		if Calc_Y_Velocity < 0: #Check if the player is ascending
 			if !WeakJumpGravityEnabled: # if we are ascending, check if we need to apply weak gravity on ascending
@@ -215,9 +221,12 @@ func Handle_Falling(delta:float) -> void:
 			else:
 				Calc_Y_Velocity += GravityStrength * FastFallStrength * delta #If flag, we add in our fall speed multiplier
 
-	if is_on_floor():
-		Calc_Y_Velocity = 0
+	if is_on_floor(): #this here is a sanity check that sets y velocity to 0 if we're on the floor; since falling is evaluated BEFORE jumping, if we jump, this will be overridden
+		Calc_Y_Velocity = 0 #This is really only here to stop an unusual bug where the player builds up falling momentum while on the floor
 
+'''
+This is a utility jumping function that handles/resets jumping related flags
+'''
 func JumpFunctionality() -> void:
 	if is_on_floor(): #If we're on the floor
 		HeadBonked = false
@@ -237,7 +246,15 @@ func JumpFunctionality() -> void:
 		CoyoteTimer.start(CoyoteTimeDuration) #We start the coyote timer when we leave the floor
 
 
+'''
+As the name suggests, this function is here to "try" to jump, it sees if a jump is possible, and if it is, it'll call the actual jump function
+Unlike other functions I've used so far, this function has both a parameter and a return value.
+The return value is a true/false basically saying if it actually successfully jumped or not
+The parameter is a value that defaults to true, which says whether or not the jump was a "real" jump attempt executed by the player
 
+Both of these are basically only for the input buffer value, as only a "real" jump attempt will set an input buffer flag if it fails, and the return
+value is also for the input buffered jump, to check for jump success to turn the buffered jump flag back off after the successful jump
+'''
 func AttemptJump(RealJump:bool = true) -> bool:
 	if is_on_floor() or (CoyoteTime and CoyoteJumpAvailable): #see if we can jump with on floor, or coyote time
 		Jump() #we do whatever jump mechanic is enabled
@@ -254,18 +271,21 @@ func AttemptJump(RealJump:bool = true) -> bool:
 			JumpBufferTimer.start(JumpBufferLifespan)
 		return false
 
-
+'''
+This is the actual jump function, if it's called that means we've successfully jumped and need to apply the proper jump mechanic
+'''
 func Jump() -> void:
 	JumpBufferAvailable = false #if we get to this point we're jumping
 	JumpBufferTimer.stop() #regardless of anything, we can safely disable jump buffer availability and the timer
 	HeadBonked = false #will also reset Head Bonking 
 	
+	#Now, based on the Enabled Jump Mechanic, we do various things
 	match EnabledJumpMechanic:
-		JumpMechanic.ImpulseJump:
+		JumpMechanic.ImpulseJump: #the most basic is just to set the y velocity to jump power
 			Calc_Y_Velocity = -JUMP_POWER
-		JumpMechanic.DurationJump1:
-			isDurationJumping1 = true 
-			DurationJumpTimer.start(DurationJumpLifespan)
+		JumpMechanic.DurationJump1: #for duration jumping, we just set the flags and timers
+			isDurationJumping1 = true #the flag will trigger code in the main physics process to "do" the duration jump every frame
+			DurationJumpTimer.start(DurationJumpLifespan) #the timers will turn off duration jumping automatically 
 		JumpMechanic.DurationJump2:
 			isDurationJumping2 = true
 			DurationJumpTimer.start(DurationJumpLifespan)
@@ -273,27 +293,29 @@ func Jump() -> void:
 			assert(false, "Somehow jumped without a jump option selected - contact Calam with bug report")
 
 
-
-#Pretty standard sprite management function, this is probably better done in a state machine but it's not necessary for something as simple as this
+'''
+This is a pretty poorly written sprite handling script, haphazardly thrown together for this in like 3 minutes.
+Feel free to copy this but if your game has any significant animation then I suggest a state machine instead, but that's far beyond the scope of this project
+'''
 var FacingRight : bool = true
 @onready var Sprite : AnimatedSprite2D = $Sprite2D
 var CanJumpSpriteGreen : bool = false
 func Handle_Sprite() -> void:
-	if velocity.x > 0:
-		if not FacingRight:
+	if velocity.x > 0: #if the player "turns" we need to swap the flag to match
+		if not FacingRight: #we do it like this so if there's no input the player keeps facing the same way they did before
 			FacingRight = true
 	elif velocity.x < 0:
 		if FacingRight:
 			FacingRight = false
 			
-	if is_on_floor():
+	if is_on_floor(): #basic if on floor and moving - walk, otherwise idle
 		if velocity.x > 0:
 			Sprite.play("Walk")
 		elif velocity.x < 0:
 			Sprite.play("Walk")
 		else:
 			Sprite.play("Idle")
-	else:
+	else: #if not on floor, play jump states based on y velocity value
 		if velocity.y > 45:
 			Sprite.play("JumpUp")
 		elif velocity.y > -45: #This is a super hacky way to have a "mid jump" animation, with fixed values
@@ -301,12 +323,12 @@ func Handle_Sprite() -> void:
 		else:
 			Sprite.play("JumpDown")
 	
-	if FacingRight:
+	if FacingRight: #flip the sprite as necessary
 		Sprite.flip_h = false
 	else:
 		Sprite.flip_h = true
 		
-	if CanJumpSpriteGreen:
+	if CanJumpSpriteGreen: #flag to turn the sprite red/green based on the flag
 		if is_on_floor() or (CoyoteTime and CoyoteJumpAvailable) or (DoubleJump and DoubleJumpAvailable): #see if we can jump with on floor, or coyote time
 			Sprite.modulate = Color.GREEN
 		else:
