@@ -17,8 +17,12 @@ extends Control
 @onready var LeftTeleLocation : Node2D = get_tree().get_first_node_in_group("LeftTeleLoc")
 @onready var LeftestTeleLocation : Node2D = get_tree().get_first_node_in_group("LeftestTeleLoc")
 	
+@onready var GameSpeedInput : LineEdit = $Panel2/VBoxContainer/GameSpeed/LineEdit
 
-
+@onready var CalcX : Label = $Panel2/VBoxContainer/CalcX
+@onready var CalcY : Label = $Panel2/VBoxContainer/CalcY
+@onready var TrueX : Label = $Panel2/VBoxContainer/TrueX
+@onready var TrueY : Label = $Panel2/VBoxContainer/TrueY
 
 func _ready():
 
@@ -39,6 +43,12 @@ func _ready():
 	$Panel/Teleport_Options/TeleMid.pressed.connect(ButtonPressed.bind(12))
 	$Panel/Teleport_Options/TeleLeft.pressed.connect(ButtonPressed.bind(13))
 	$Panel/Teleport_Options/TeleLeftest.pressed.connect(ButtonPressed.bind(14))
+	
+	$"Panel2/VBoxContainer/Pause Game Button".pressed.connect(ButtonPressed.bind(15))
+	$Panel2/VBoxContainer/GameSpeed/Button.pressed.connect(ButtonPressed.bind(16))
+	$Panel2/VBoxContainer/HideButton.pressed.connect(ButtonPressed.bind(17))
+	$Showbutton2.pressed.connect(ButtonPressed.bind(18))
+	
 	#Checkboxes
 	$"Panel/Jumping_Options/Impulse/Checkbox".pressed.connect(BoxChecked.bind(1)) #these 3 are unique and cannot overlap and requires min 1
 	$"Panel/Jumping_Options/DurationJumpv1/CheckBox".pressed.connect(BoxChecked.bind(2))
@@ -132,9 +142,23 @@ func ButtonPressed(id = -1):
 			PlayerRef.global_position = LeftTeleLocation.global_position
 		14:
 			PlayerRef.global_position = LeftestTeleLocation.global_position
+		15:
+			get_tree().paused = not get_tree().paused 
+		16:
+			if GameSpeedInput.text.is_valid_float():
+				Engine.time_scale = (GameSpeedInput.text.to_float())
+			else:
+				InputBufferTimeInput.text = "Error"
+		17:
+			$Panel2.visible = false
+			$Showbutton2.visible = true
+		18:
+			$Panel2.visible = true
+			$Showbutton2.visible = false
 		_:
 			assert(false, "How did this happen? Button Pressed without valid ID")
 		
+
 
 func BoxChecked(id = -1):
 	match id:
@@ -200,3 +224,9 @@ func _gui_input(event):
 		var focus = get_viewport().gui_get_focus_owner()
 		if is_instance_valid(focus):
 			focus.release_focus()
+
+func _physics_process(delta: float) -> void:
+	CalcX.text = "Calculated X : " + str(snapped(PlayerRef.Calc_X_Velocity,0.01))
+	CalcY.text = "Calculated Y : " + str(snapped(PlayerRef.Calc_Y_Velocity,0.01))
+	TrueX.text = "True X : " + str(snapped(PlayerRef.velocity.x,0.01))
+	TrueY.text = "True Y : " + str(snapped(PlayerRef.velocity.y,0.01))

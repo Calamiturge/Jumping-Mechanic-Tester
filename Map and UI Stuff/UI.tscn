@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://coa1qyk2okxmc" path="res://Map and UI Stuff/panel.gd" id="2_3peey"]
 
 [node name="Control" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -596,4 +597,71 @@ offset_left = 11.0
 offset_top = 6.0
 offset_right = 63.0
 offset_bottom = 43.0
-text = "Show"
+text = "Show Character Stats"
+
+[node name="Panel2" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 1653.0
+offset_top = 2.0
+offset_right = 1919.0
+offset_bottom = 222.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel2"]
+layout_mode = 0
+offset_left = 5.0
+offset_right = 245.0
+offset_bottom = 215.0
+
+[node name="CalcX" type="Label" parent="Panel2/VBoxContainer"]
+layout_mode = 2
+text = "Calculated X : "
+
+[node name="CalcY" type="Label" parent="Panel2/VBoxContainer"]
+layout_mode = 2
+text = "Calculated Y : "
+
+[node name="TrueX" type="Label" parent="Panel2/VBoxContainer"]
+layout_mode = 2
+text = "True X : "
+
+[node name="TrueY" type="Label" parent="Panel2/VBoxContainer"]
+layout_mode = 2
+text = "True Y : "
+
+[node name="Pause Game Button" type="Button" parent="Panel2/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+text = "Pause / Unpause Game"
+
+[node name="GameSpeed" type="HBoxContainer" parent="Panel2/VBoxContainer"]
+layout_mode = 2
+
+[node name="ToolTip" parent="Panel2/VBoxContainer/GameSpeed" instance=ExtResource("1_b3bc3")]
+layout_mode = 2
+PopupText = "This multiplies how fast the game is going, base of 1. Primarily used to slow down the game to watch calculated XY better"
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Panel2/VBoxContainer/GameSpeed"]
+layout_mode = 2
+text = "Game Speed : "
+
+[node name="LineEdit" type="LineEdit" parent="Panel2/VBoxContainer/GameSpeed"]
+layout_mode = 2
+text = "1"
+
+[node name="Button" type="Button" parent="Panel2/VBoxContainer/GameSpeed"]
+layout_mode = 2
+text = "Set"
+
+[node name="HideButton" type="Button" parent="Panel2/VBoxContainer"]
+layout_mode = 2
+text = "Hide"
+
+[node name="Showbutton2" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 1736.0
+offset_top = 7.0
+offset_right = 1913.0
+offset_bottom = 44.0
+text = "Show Game Modifiers"
