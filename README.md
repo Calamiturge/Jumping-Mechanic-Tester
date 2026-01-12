@@ -20,3 +20,6 @@ UC Alumni
 
 
 Note - the .exe likes to hang for like 15s on first run, I assume it's setting up files or something unsure
+
+
+The only actually useful part of the code to look at in this project is the MovementScript.gd because it holds all the logic about moving around, everything else is pretty boilerplate UI stuff, or assets.
